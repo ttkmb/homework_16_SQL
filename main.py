@@ -2,7 +2,6 @@ from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
 from data import users, orders, offers
 from datetime import datetime
-import json
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///memory:"
@@ -41,9 +40,6 @@ class Offer(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     order_id = db.Column(db.Integer, db.ForeignKey('order.id'))
     executor_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-
-
-
 
 
 def get_users_offers_orders():
@@ -160,7 +156,6 @@ def id_orders_index(id):
         db.session.add(order_id)
         db.session.commit()
 
-
     elif request.method == 'DELETE':
         order_delete = Order.query.get(id)
         db.session.delete(order_delete)
@@ -236,7 +231,6 @@ def users_index_id(id):
     return '', 200
 
 
-
 @app.route('/offers', methods=['GET', 'POST'])
 def offers_index():
     if request.method == 'GET':
@@ -258,6 +252,7 @@ def offers_index():
         with db.session.begin():
             db.session.add(new_offer)
     return '', 200
+
 
 @app.route('/offers/<int:id>', methods=['GET', 'POST', 'PUT', 'DELETE'])
 def offers_index_id(id):
